@@ -1,8 +1,15 @@
+#############################################################
+# [2022-10-17]: Created by Surya & Mobassir
+#############################################################
+
 import pandas as pd
 import tweepy as tw
 from datetime import datetime, timedelta
 
-import sys
+import sys, os
+file_path = os.path.abspath(__file__)
+repo_path = file_path[:file_path.find('TweetItBig\\') + len('TweetItBig\\')]
+sys.path.append(repo_path)
 
 import config
 
@@ -19,8 +26,8 @@ def tdf(tweets, tweets_df, search):
                 'account_date': [tweet.user.created_at.strftime("%Y-%m-%d")],
                 'result_type': [tweet.metadata['result_type']],
                 'favourites_cnt': [tweet.user.favourites_count],
-                'date': [tweet.created_at.strftime("%Y-%m-%d")],
-                'time': [tweet.created_at.strftime("%H:%M:%S")],
+                'date': [str(tweet.created_at.strftime("%Y-%m-%d"))],
+                'datetime': [tweet.created_at.strftime("%Y-%m-%d %H:%M:%S")],
                 'text': [tweet.full_text], 
                 'hashtags': str([i['text'] for i in tweet.entities["hashtags"] if i]),
                 'source': [tweet.source],
@@ -35,19 +42,19 @@ def tdf(tweets, tweets_df, search):
 
 def fetch(searches=[]):
     tweets_df = pd.DataFrame()
-    # authenticate
+    # authenticate using the api keys
     auth = tw.OAuthHandler(config.my_api_key1, config.my_api_secret1)
     api = tw.API(auth, wait_on_rate_limit=True)
     for search in searches:
         search_query = search +" -filter:retweets"
    
-        #tweets = tw.Cursor(api.search_tweets, 
-        #                   q=search_query,
-        #                   lang="en",
-        #                  tweet_mode='extended'
-        #                  ).items(4000)
+        tweets = tw.Cursor(api.search_tweets, 
+                           q=search_query,
+                           lang="en",
+                          tweet_mode='extended'
+                          ).items(4000)
 
-        #tweets_df = tdf(tweets, tweets_df, search)
+        tweets_df = tdf(tweets, tweets_df, search)
         
         tweets = api.search_tweets(q=search_query,
                                     lang="en", 
@@ -89,15 +96,12 @@ def fetch(searches=[]):
         #print(min(tweets_df.date))
         #print(max(tweets_df.date))
         #print(f"Latest length of dataset: {len(tweets_df)}")
-        
-    l = tweets_df.columns.to_list()
-    l.remove('search_term')
     
     print("Tweets before deletion\t:",tweets_df.shape)
-    tweets_df.drop_duplicates(subset=l, ignore_index=True, inplace=True)
+    tweets_df.sort_values(by=['datetime'], ascending=False)
+    tweets_df.drop_duplicates(subset=['text'], ignore_index=True, inplace=True)
     print("Tweets after deletion\t:",tweets_df.shape)
 
     #tweets_df.to_excel(f'{config.data_dir}{"_".join(searches)}_{datetime.now().strftime("%d-%m-%y")}.xlsx', index=False)
-    #tweets_df.to_excel(f'{config.data_dir}{"_".join(searches)}.xlsx', index=False)
     
     return tweets_df
