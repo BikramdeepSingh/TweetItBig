@@ -56,10 +56,10 @@ def fetch(searches=[]):
         search_query = search +" -filter:retweets"
    
         tweets = tw.Cursor(api.search_tweets, 
-                           q=search_query,
-                           lang="en",
-                          tweet_mode='extended'
-                          ).items(4000)
+                          q=search_query,
+                          lang="en",
+                         tweet_mode='extended'
+                         ).items(4000)
 
         tweets_df = tdf(tweets, tweets_df, search)
         
@@ -99,10 +99,9 @@ def fetch(searches=[]):
                 
         tweets_df.drop_duplicates(inplace=True, ignore_index=True)
         
-        #print(f"\nFor search term : {search}")
-        #print(min(tweets_df.date))
-        #print(max(tweets_df.date))
-        #print(f"Latest length of dataset: {len(tweets_df)}")
+    #print(f"\nFor search term : {search}")
+    print(f"Data Extracted from {min(tweets_df.datetime)} to {max(tweets_df.datetime)}")
+    #print(f"Latest length of dataset: {len(tweets_df)}")
     
     # We need to drop any duplicate tweets fetched (if any) due to overlapping API calls
     print("Tweets before deletion\t:",tweets_df.shape)
