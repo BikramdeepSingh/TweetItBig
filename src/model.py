@@ -17,7 +17,7 @@ import config
 
 
 def vader_run(df):
-    df["Vader_score"] = [SentimentIntensityAnalyzer().polarity_scores(i)['compound'] for i in df["text"]]
+    df["Vader_score"] = [SentimentIntensityAnalyzer().polarity_scores(i)['compound'] for i in df["cleaned_text"]]
 
     cutoff = 0
     df["Vader_sentiment"] = ''
