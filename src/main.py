@@ -2,6 +2,7 @@
 # [2022-10-17]: Created by Bikramdeep & Surya
 #############################################################
 
+# Importing libraries and modules
 import pandas as pd
 from data_fetch import fetch
 from clean_data import clean
@@ -27,8 +28,9 @@ tweets_df = clean(tweets_df)
 
 print("Shape of data extracted today: ", tweets_df.shape)
 
+# Extracting sentiment using Vader
 print("\n\nRunning Vader...")
-# Extracting sentiment
+
 tweets_df = vader_run(tweets_df)
 
 print('\nTime after modelling: ', time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())))
