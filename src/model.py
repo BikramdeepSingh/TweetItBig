@@ -17,14 +17,24 @@ import config
 
 
 def vader_run(df):
+    '''
+    NLTK's Vader model is selected to detect sentiment of tweets as it has been trained on twitter data as well which gives it an edge to interpret informal english slangs, emojis and punctuation.
+    '''
+
+    # Extracting the Vader's compound sentiment score which ranges from -1 to +1
     df["Vader_score"] = [SentimentIntensityAnalyzer().polarity_scores(i)['compound'] for i in df["cleaned_text"]]
 
+    # setting boundary between Negative, Neutral and Positive at 0
     cutoff = 0
     df["Vader_sentiment"] = ''
     df.loc[df.Vader_score > cutoff, 'Vader_sentiment'] = 'Positive'
     df.loc[df.Vader_score.abs() <= cutoff, 'Vader_sentiment'] = 'Neutral'
     df.loc[df.Vader_score < -cutoff, 'Vader_sentiment'] = 'Negative'
+    
+    print("\nResultant sentiment counts: ")
+    print(df.Vader_sentiment.value_counts())
 
+    # Fetching old output file and appending the current results
     old = pd.read_excel(config.data_dir+'Final_output.xlsx')
     old.date = old.date.astype(str)
     
@@ -37,4 +47,6 @@ def vader_run(df):
 
     full_df.to_excel(config.data_dir+'Final_output.xlsx', index=False)
 
+    print("Output file updated and saved.")
+    
     return df

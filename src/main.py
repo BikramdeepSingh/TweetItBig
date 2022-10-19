@@ -35,7 +35,4 @@ tweets_df = vader_run(tweets_df)
 
 print('\nTime after modelling: ', time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())))
 
-print("\nResultant sentiment counts: ")
-print(tweets_df.Vader_sentiment.value_counts())
-
 print('End Time: ', time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())))
