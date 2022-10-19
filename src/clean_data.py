@@ -1,5 +1,5 @@
 #############################################################
-# [2022-10-17]: Created by Tanishq & Gurvinder
+# [2022-10-17]: Created by Tanishq & Jagvinder
 #############################################################
 
 # Importing libraries and modules
