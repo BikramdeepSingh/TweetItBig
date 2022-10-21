@@ -12,7 +12,7 @@ file_path = os.path.abspath(__file__)
 repo_path = file_path[:file_path.find('TweetItBig\\') + len('TweetItBig\\')]
 sys.path.append(repo_path)
 
-from config import my_api_key1, my_api_secret1 
+import config
 
 
 def tdf(tweets, tweets_df, search):
@@ -49,8 +49,13 @@ def fetch(searches=[]):
     This function helps in fetching 20k+ tweets since last week (7 days) using a combination of same API calls with different parameters
     '''
     tweets_df = pd.DataFrame()
-    # authenticate using the api keys
-    auth = tw.OAuthHandler(my_api_key1, my_api_secret1)
+    
+    # authenticate using the api keys from two different accounts
+    if datetime.today().day%2==0:
+        auth = tw.OAuthHandler(config.my_api_key1, config.my_api_secret1)    
+    else:
+        auth = tw.OAuthHandler(config.my_api_key2, config.my_api_secret2)
+
     api = tw.API(auth, wait_on_rate_limit=True)
     for search in searches:
         search_query = search +" -filter:retweets"
