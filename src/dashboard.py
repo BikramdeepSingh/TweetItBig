@@ -27,7 +27,7 @@ app.layout = html.Div(children=[
     html.H1(children='TweetitBig'),
     dcc.Dropdown(id='sentiment-dropdown',
                     options=[{'label':i, 'value':i}
-                             for i in TiB_data['Vader_sentiment']],
+                             for i in TiB_data['Vader_sentiment'].unique()],
                     value='Positive'),
     dcc.Graph(id='sentiment-graph')
 ])
@@ -40,11 +40,11 @@ app.layout = html.Div(children=[
 def update_graph(selected_sentiment):
     filtered_sentiment = TiB_data[TiB_data['Vader_sentiment'] == selected_sentiment]
     line_fig = px.line(filtered_sentiment,
-                        x='date', y='Vader_score', color='type',
+                        x='date', y='Vader_score', color='Vader_sentiment',
                         title=f'Sentiment variation for {selected_sentiment}'
     )
     return line_fig
 
 # Run local server
-if __name__=='main.py':
+if __name__ == '__main__':
     app.run_server(debug=True)
