@@ -25,23 +25,23 @@ app = dash.Dash()
 # Set up the app layout
 app.layout = html.Div(children=[
     html.H1(children='TweetitBig'),
-    dcc.Dropdown(id='sentiment-dropdown',
+    dcc.Dropdown(id='search-dropdown',
                     options=[{'label':i, 'value':i}
-                             for i in TiB_data['Vader_sentiment'].unique()],
-                    value='Positive'),
-    dcc.Graph(id='sentiment-graph')
+                             for i in TiB_data['search_term'].unique()],
+                    value='apple'),
+    dcc.Graph(id='search-graph')
 ])
 
 # Setting up the callback function
 @app.callback(
-    Output(component_id='sentiment-graph', component_property='figure'),
-    Input(component_id='sentiment-dropdown', component_property='value')
+    Output(component_id='search-graph', component_property='figure'),
+    Input(component_id='search-dropdown', component_property='value')
 )
-def update_graph(selected_sentiment):
-    filtered_sentiment = TiB_data[TiB_data['Vader_sentiment'] == selected_sentiment]
+def update_graph(selected_search):
+    filtered_sentiment = TiB_data[TiB_data['search_term'] == selected_search]
     line_fig = px.line(filtered_sentiment,
-                        x='date', y='Vader_score', color='Vader_sentiment',
-                        title=f'Sentiment variation for {selected_sentiment}'
+                        x='date', y='retweet_cnt', color='Vader_sentiment',
+                        title=f'Sentiment variation for {selected_search}'
     )
     return line_fig
 
