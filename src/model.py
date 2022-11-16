@@ -18,7 +18,8 @@ import config
 
 def vader_run(df):
     '''
-    NLTK's Vader model is selected to detect sentiment of tweets as it has been trained on twitter data as well which gives it an edge to interpret informal english slangs, emojis and punctuation.
+    NLTK's Vader model is selected to detect sentiment of tweets as it has been trained on twitter data as well 
+    which gives it an edge to interpret informal english slangs, emojis and punctuation.
     '''
 
     # Extracting the Vader's compound sentiment score which ranges from -1 to +1
