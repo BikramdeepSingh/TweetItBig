@@ -9,41 +9,201 @@
 '''
 
 # Importing necessary libraries to work on building with TweetitBig dashboard
+'''
+    Dash library helps in building open source data visualization interfaces. Dash builds the interface 
+    while plotly generates the visualizations
+'''
 import dash
 from dash import html
 from dash import dcc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output 
 import pandas as pd
 import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 
 # Loading the dataset from data directory
-TiB_data = pd.read_excel('C:\Academics\Sem2\AISC2006_Step2\TweetItBig\TweetItBig\data\Final_output.xlsx')
+TiB_data = pd.read_excel('data/Final_output.xlsx')
 
 # Creating the TweetitBig Dash app
 app = dash.Dash()
+# Altering the title and favicon from default to custom
+app.title = "TweetitBig" 
+'''
+    In order to execute the favicon code, folder named assets is required as it takes the path for 
+    it by default and cannot be altered.
+    Save the favicon icon inside assets folder to successfully execute this below code.
+'''
+app._favicon = ("logo.png") 
 
-# Set up the app layout
+# Coloring scheme which is used for sentiment identification
+sentiment_colors = ['rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 0, 0)']
+
+# Setting up the app layout
 app.layout = html.Div(children=[
-    html.H1(children='TweetitBig'),
-    dcc.Dropdown(id='search-dropdown',
-                    options=[{'label':i, 'value':i}
-                             for i in TiB_data['search_term'].unique()],
-                    value='apple'),
-    dcc.Graph(id='search-graph')
+    html.H1(children='TweetitBig', # Giving heading to website
+            style = { # Styling the heading
+                    'color': '#4169e1',
+                    'text-align': 'center'
+                    }
+            ),
+    html.H3(
+        children="Don't just be a Tweeter, make use of it!", # Quote of TweetitBig
+        style = { # Styling quote
+                'color': 'black',
+                'text-align': 'center'
+                }
+    ),
+    # Creating a dropdown list for search keywords i.e. apple to update scatter plot on selection
+    dcc.Dropdown(id='search-dropdown', 
+                options=[{'label':i, 'value':i}
+                        for i in TiB_data['search_term'].unique()], # Only displaying the unique values in dropdown list
+                value='apple'), # Setting default value for dropdown to apple
+    dcc.Graph(id='search-graph'), # Graph to be rendered
+    
+    # dcc.Dropdown(
+    #     id="scattermatrix_dropdown",
+    #     options=[{'label':i, 'value':i}
+    #               for i in TiB_data['Vader_sentiment'].unique()],
+    #     value='Positive',
+    #     multi=True
+    # ),
+
+    dcc.Graph(id="pie-graph"), # Graph to be rendered
+    dcc.Interval(id = 'search_update', interval= 300*1000, n_intervals = 0), # This code updates the plot after every 5 minutes
+    
+    dcc.Graph(id="hist-graph"),
+    dcc.Interval(id = 'search_hist_update', interval= 300*1000, n_intervals = 0), # This code updates the plot after every 5 minutes
+
+    dcc.Graph(id="multi-column-graph"), # Rendering a 2 column graph in a single row
+    html.P("Width Slider:"), # Implementing width slider for multi-column-graph
+    # Setting slider properties
+    dcc.Slider(
+        id='slider-width', 
+        min=.1, 
+        max=.9, 
+        value=0.5, 
+        step=0.1),
 ])
 
 # Setting up the callback function
+'''
+    Automatically called whenever an UI element is changed.
+    In our case, updates to dropdown will be handled with callback
+'''
 @app.callback(
     Output(component_id='search-graph', component_property='figure'),
-    Input(component_id='search-dropdown', component_property='value')
+    Input(component_id='search-dropdown', component_property='value'),
 )
+# update function executed to work with dropdown list creating a scatter plot
 def update_graph(selected_search):
     filtered_sentiment = TiB_data[TiB_data['search_term'] == selected_search]
-    line_fig = px.line(filtered_sentiment,
-                        x='date', y='retweet_cnt', color='Vader_sentiment',
-                        title=f'Sentiment variation for {selected_search}'
+    scatter_fig = px.scatter(
+        filtered_sentiment, 
+        x='date', 
+        y='retweet_cnt', 
+        color='Vader_sentiment', 
+        title=f'Sentiment variation for tweets getting retweeted with {selected_search} keyword', 
+        height=600,
     )
-    return line_fig
+    return scatter_fig
+
+@app.callback(
+    Output("pie-graph", "figure"), 
+    Input("search_update", "n_intervals"))
+# update function executed to work with intervals list creating a pie chart
+def update_pie(graph_params):
+    pie_plot = px.pie(
+                        TiB_data, 
+                        values='favourites_cnt', 
+                        names='Vader_sentiment', 
+                        hole=.3, 
+                        title=f'Categorical percent of favourite tweets', 
+                        height=700
+                     )
+    pie_plot.update_traces(
+        textposition='inside', 
+        textinfo='percent+label', 
+        marker_colors=sentiment_colors
+        )
+    return pie_plot
+
+
+@app.callback(
+    Output("hist-graph", "figure"), 
+    Input("search_hist_update", "n_intervals"))
+# update function executed to work with dropdown list creating a histogram
+def update_hist(graph_params):
+    hist_plot = px.histogram(
+        TiB_data, 
+        x="search_term", 
+        y="Vader_sentiment", 
+        pattern_shape="user_verified", 
+        title=f'Sentiments count against keywords', 
+        color='Vader_sentiment', 
+        barmode='group', 
+        histfunc='count', 
+        text_auto=True, 
+        height=700)
+    hist_plot.update_yaxes(title_text="Sentiment Count")
+    hist_plot.update_xaxes(title_text="Search Keyword")
+    return hist_plot                 
+
+@app.callback(
+    Output("multi-column-graph", "figure"), 
+    Input("slider-width", "value"))
+# update function executed to work with slider and traces list creating multi-column-graph
+def customize_width(left_width):
+    fig = make_subplots(
+        rows=1, 
+        cols=2, 
+        column_widths=[left_width, 1 - left_width]
+        )
+
+    fig.add_trace(
+        row=1, 
+        col=1,
+        trace=go.Scatter(
+            x=TiB_data['date'], 
+            y=TiB_data['followers_cnt']
+            )
+        ) 
+    fig.update_xaxes(
+        title_text="xaxis 1 title", 
+        row=1, 
+        col=1
+        )
+    fig.update_yaxes(
+        title_text="Sentiment", 
+        row=1, 
+        col=1
+        )
+
+    fig.add_trace(
+        row=1, 
+        col=2,
+        trace=go.Scatter(
+            x=TiB_data['Vader_sentiment'], 
+            y=TiB_data['date']
+            )
+        )
+    fig.update_xaxes(
+        title_text="xaxis 2 title", 
+        row=1, 
+        col=2
+        )
+    fig.update_yaxes(
+        title_text="Sentiment", 
+        row=1, 
+        col=1
+        )
+
+    # Updating title and height
+    fig.update_layout(
+        title_text="Subplots testing", 
+        height=650
+        )
+    return fig
 
 # Run local server
 if __name__ == '__main__':
