@@ -18,8 +18,7 @@ import config
 
 def vader_run(df):
     '''
-    NLTK's Vader model is selected to detect sentiment of tweets as it has been trained on twitter data as well 
-    which gives it an edge to interpret informal english slangs, emojis and punctuation.
+    NLTK's Vader model is selected to detect sentiment of tweets as it has been trained on twitter data as well which gives it an edge to interpret informal english slangs, emojis and punctuation.
     '''
 
     # Extracting the Vader's compound sentiment score which ranges from -1 to +1
@@ -41,10 +40,10 @@ def vader_run(df):
     
     full_df = pd.concat([old, df], ignore_index=True)
 
-    print("Full data shape with duplicates\t: ",full_df.shape)
+    print("Full data shape before insertion\t\t: ",full_df.shape)
     full_df.sort_values(by=['datetime'], ascending=False)
     full_df.drop_duplicates(subset=['text'], ignore_index=True, inplace=True)
-    print("Full data shape without duplicates\t: ",full_df.shape)
+    print("Full data shape after insertion (after duplicated deletion)\t: ",full_df.shape)
 
     full_df.to_excel(config.data_dir+'Final_output.xlsx', index=False)
 
