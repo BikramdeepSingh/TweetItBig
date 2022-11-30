@@ -2,6 +2,12 @@
 # [2022-10-17]: Created by Bikramdeep & Surya
 #############################################################
 
+# Importing 
+# import sys#, os
+# file_path = os.path.abspath(__file__)
+# repo_path = file_path[:file_path.find('TweetItBig\\') + len('TweetItBig\\')]
+# sys.path.append('src\\')
+
 # Importing libraries and modules
 import warnings
 warnings.filterwarnings("ignore")
