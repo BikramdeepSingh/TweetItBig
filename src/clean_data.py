@@ -15,4 +15,5 @@ def clean(df):
     '''
     
     df['cleaned_text'] = df.text.apply(lambda x: cln(x, no_urls=True))
+    df.drop('text', axis=1, inplace=True)
     return df

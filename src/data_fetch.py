@@ -51,10 +51,12 @@ def fetch(searches=[]):
     tweets_df = pd.DataFrame()
     
     # authenticate using the api keys from two different accounts
-    if datetime.today().day%2==0:
-        auth = tw.OAuthHandler(config.my_api_key1, config.my_api_secret1)    
-    else:
-        auth = tw.OAuthHandler(config.my_api_key2, config.my_api_secret2)
+    # if datetime.today().day%2==0:
+    #     auth = tw.OAuthHandler(config.my_api_key1, config.my_api_secret1)    
+    # else:
+    #     auth = tw.OAuthHandler(config.my_api_key2, config.my_api_secret2)
+    
+    auth = tw.OAuthHandler(config.my_api_key2, config.my_api_secret2)
 
     api = tw.API(auth, wait_on_rate_limit=True)
     for search in searches:
@@ -109,10 +111,10 @@ def fetch(searches=[]):
     #print(f"Latest length of dataset: {len(tweets_df)}")
     
     # We need to drop any duplicate tweets fetched (if any) due to overlapping API calls
-    print("Tweets before deletion\t:",tweets_df.shape)
+    print("Raw tweets count\t:",tweets_df.shape)
     tweets_df.sort_values(by=['datetime'], ascending=False)
     tweets_df.drop_duplicates(subset=['text'], ignore_index=True, inplace=True)
-    print("Tweets after deletion\t:",tweets_df.shape)
+    print("Tweets shape after duplicated deletion\t:",tweets_df.shape)
 
     # Uncomment below line in case we need to store the raw data
     #tweets_df.to_excel(f'{config.data_dir}{"_".join(searches)}_{datetime.now().strftime("%d-%m-%y")}.xlsx', index=False)
