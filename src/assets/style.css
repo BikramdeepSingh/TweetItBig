@@ -1,0 +1,223 @@
+/*
+    Code contributed by Bikramdeep Singh
+    Time stamp: 12-Dec-2022 03:11 PM
+*/
+
+html,
+body {
+  min-height: 100%;
+  min-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+nav {
+  min-width: 100%;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  padding: 0;
+}
+
+.home_image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1100px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.home_tagline {
+  align-items: center;
+  text-align: center;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: x-large;
+}
+
+.home_base_tagline {
+  align-items: center;
+  text-align: center;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: x-large;
+}
+
+.card_container {
+  border-radius: 5px;
+  background-color: blueviolet;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.card_container:hover {
+  transform: scale(1.01);
+  background-color: rgb(104, 29, 175);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.parent_side_by_side {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 20px;
+  width: 100%;
+}
+
+.home_left_align {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
+.home_right_align {
+  width: 90%;
+  border-radius: 5px;
+  background-color: blueviolet;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.home_right_align:hover {
+  transform: scale(1.01);
+  background-color: rgb(104, 29, 175);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.about_card_container {
+  border-radius: 5px;
+  background-color: blueviolet;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: large;
+  color: white;
+  text-align: justify;
+}
+
+.about_card_container:hover {
+  transform: scale(1.01);
+  background-color: rgb(104, 29, 175);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.scatter_div {
+  border-radius: 5px;
+  background-color: blueviolet;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.scatter_div:hover {
+  transform: scale(1.01);
+  background-color: rgb(5, 3, 50);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.parent_graph {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 20px;
+  width: 100%;
+}
+
+.left_graph {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.right_graph {
+  width: 90%;
+  border-radius: 5px;
+  background-color: blueviolet;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.table_div {
+  border-radius: 5px;
+  background-color: rgb(127, 26, 38);
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.table_div:hover {
+  transform: scale(1.01);
+  background-color: rgb(74, 0, 4);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.sentiment_analysis_div {
+  border-radius: 5px;
+  background-color: rgb(20, 112, 52);
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.sentiment_analysis_div:hover {
+  transform: scale(1.01);
+  background-color: rgb(1, 51, 7);
+  box-shadow: 4px 4px 4px #1f2c56;
+}
+
+.sub_pol_div {
+  border-radius: 5px;
+  background-color: #06d6cc;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+}
+
+.sub_pol_div:hover {
+  background-color: #048b84;
+  box-shadow: 2px 2px 2px 2px #faefe6;
+}
+
+.keyword_search_div {
+  border-radius: 5px;
+  background-color: #06d6cc;
+  margin: 25px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 2px 2px 2px #1f2c56;
+}
+
+.error_bg {
+  /* The image used */
+  background-image: url("/assets/404_not_found.jpg");
+
+  /* Full height */
+  height: 100vh;
+  width: 100wh;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#home_btn_404 {
+  position: absolute;
+  margin-left: -50px;
+  left: 50%;
+  bottom: 50px;
+}

@@ -17,16 +17,18 @@ import dash
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output 
+import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import navigation
 
 # Loading the dataset from data directory
 TiB_data = pd.read_excel('data/Final_output.xlsx')
 
 # Creating the TweetitBig Dash app
-app = dash.Dash()
+app = dash.Dash(__name__,external_stylesheets=[dbc.themes.ZEPHYR, dbc.icons.BOOTSTRAP])
 # Altering the title and favicon from default to custom
 app.title = "TweetitBig" 
 '''
@@ -41,17 +43,19 @@ sentiment_colors = ['rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(255, 0, 0)']
 
 # Setting up the app layout
 app.layout = html.Div(children=[
-    html.H1(children='TweetitBig', # Giving heading to website
-            style = { # Styling the heading
-                    'color': '#4169e1',
-                    'text-align': 'center'
-                    }
-            ),
+    navigation.navbar,
+    # html.H1(children='TweetitBig', # Giving heading to website
+    #         style = { # Styling the heading
+    #                 'color': '#4169e1',
+    #                 'text-align': 'center'
+    #                 }
+    #         ),
     html.H3(
         children="Don't just be a Tweeter, make use of it!", # Quote of TweetitBig
         style = { # Styling quote
-                'color': 'black',
-                'text-align': 'center'
+                'color': 'Black',
+                'text-align': 'center',
+                'margin-top:': 20,
                 }
     ),
     # Creating a dropdown list for search keywords i.e. apple to update scatter plot on selection
@@ -60,6 +64,7 @@ app.layout = html.Div(children=[
                         for i in TiB_data['search_term'].unique()], # Only displaying the unique values in dropdown list
                 value='apple'), # Setting default value for dropdown to apple
     dcc.Graph(id='search-graph'), # Graph to be rendered
+    
     
     # dcc.Dropdown(
     #     id="scattermatrix_dropdown",
