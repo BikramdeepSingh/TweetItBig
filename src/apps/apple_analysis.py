@@ -116,7 +116,7 @@ apple_analysis_layout = dbc.Container([
         className="scatter_div left_graph"
         ),
         html.Div(children=[
-            html.H3("Pie Chart",
+            html.H3("Sentiment Distribution",
             style = { # Styling quote
                     'color': 'yellow',
                     'text-align': 'center',
@@ -134,7 +134,7 @@ apple_analysis_layout = dbc.Container([
     ),
     html.Div(
         children=[
-            html.H3("Histo Chart",
+            html.H3("Most frequent words in positive tweets",
             style = { # Styling quote
                     'color': 'yellow',
                     'text-align': 'center',

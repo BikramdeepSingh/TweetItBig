@@ -2,6 +2,12 @@
     Code contributed by Bikramdeep Singh
     Time stamp: 11-Dec-2022 11:16 PM
 '''
+import sys, os
+file_path = os.path.abspath(__file__)
+repo_path = file_path[:file_path.find('TweetItBig\\') + len('TweetItBig\\')]
+sys.path.append(repo_path)
+print("abc",repo_path)
+import config 
 
 from dash import Dash
 from dash import html, dcc, callback, Output, Input, dash_table
@@ -14,12 +20,7 @@ import re
 import emoji
 import navigation
 
-import sys, os
-file_path = os.path.abspath(__file__)
-repo_path = file_path[:file_path.find('TweetItBig\\') + len('TweetItBig\\')]
-sys.path.append(repo_path)
 
-import config
 
 # function to clearn tweets from emojis and links and line breaks and more
 def clean_tweets(txt):
@@ -34,7 +35,7 @@ def clean_tweets(txt):
 
 
 # Set authentication and access token
-authenticate = tweepy.OAuthHandler("GjHSdsEXo251KIBS26eQILHLC", "qIzHTrs1ED7QVG3lUVtgqzxtlHqP8eZRdQ75kipAPhZ7VzqNJj")
+authenticate = tweepy.OAuthHandler(config.my_api_key2, config.my_api_secret2)
 # #authenticate.set_access_token(accessToken, accessTokenSecret)
 
 # Create Twitter API using authentication information
@@ -59,7 +60,7 @@ api = tweepy.API(authenticate, wait_on_rate_limit=True)
 	
 # 	output_table := html.Div(children=[])
 
-# ], fluid=True)
+# ], fluid=True)	
 
 sentiment_analysis_layout = dbc.Container([
 	html.Div(children=[
