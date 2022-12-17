@@ -51,9 +51,9 @@ app.layout = html.Div(children=[
     #                 }
     #         ),
     html.H3(
-        children="Don't just be a Tweeter, make use of it!", # Quote of TweetitBig
+        children="Apple Case Study", # Quote of TweetitBig
         style = { # Styling quote
-                'color': 'Black',
+                'color': 'Blue',
                 'text-align': 'center',
                 'margin-top:': 20,
                 }
@@ -106,9 +106,10 @@ def update_graph(selected_search):
     scatter_fig = px.scatter(
         filtered_sentiment, 
         x='date', 
-        y='retweet_cnt', 
+        y='favourites_cnt', 
         color='Vader_sentiment', 
         title=f'Sentiment variation for tweets getting retweeted with {selected_search} keyword', 
+        #log_x=True,
         height=600,
     )
     return scatter_fig
@@ -143,7 +144,7 @@ def update_hist(graph_params):
         TiB_data, 
         x="search_term", 
         y="Vader_sentiment", 
-        pattern_shape="user_verified", 
+        #pattern_shape="user_verified", 
         title=f'Sentiments count against keywords', 
         color='Vader_sentiment', 
         barmode='group', 
@@ -154,61 +155,61 @@ def update_hist(graph_params):
     hist_plot.update_xaxes(title_text="Search Keyword")
     return hist_plot                 
 
-@app.callback(
-    Output("multi-column-graph", "figure"), 
-    Input("slider-width", "value"))
-# update function executed to work with slider and traces list creating multi-column-graph
-def customize_width(left_width):
-    fig = make_subplots(
-        rows=1, 
-        cols=2, 
-        column_widths=[left_width, 1 - left_width]
-        )
+# @app.callback(
+#     Output("multi-column-graph", "figure"), 
+#     Input("slider-width", "value"))
+# # update function executed to work with slider and traces list creating multi-column-graph
+# def customize_width(left_width):
+#     fig = make_subplots(
+#         rows=1, 
+#         cols=2, 
+#         column_widths=[left_width, 1 - left_width]
+#         )
 
-    fig.add_trace(
-        row=1, 
-        col=1,
-        trace=go.Scatter(
-            x=TiB_data['date'], 
-            y=TiB_data['followers_cnt']
-            )
-        ) 
-    fig.update_xaxes(
-        title_text="xaxis 1 title", 
-        row=1, 
-        col=1
-        )
-    fig.update_yaxes(
-        title_text="Sentiment", 
-        row=1, 
-        col=1
-        )
+#     fig.add_trace(
+#         row=1, 
+#         col=1,
+#         trace=go.Scatter(
+#             x=TiB_data['date'], 
+#             y=TiB_data['followers_cnt']
+#             )
+#         ) 
+#     fig.update_xaxes(
+#         title_text="xaxis 1 title", 
+#         row=1, 
+#         col=1
+#         )
+#     fig.update_yaxes(
+#         title_text="Sentiment", 
+#         row=1, 
+#         col=1
+#         )
 
-    fig.add_trace(
-        row=1, 
-        col=2,
-        trace=go.Scatter(
-            x=TiB_data['Vader_sentiment'], 
-            y=TiB_data['date']
-            )
-        )
-    fig.update_xaxes(
-        title_text="xaxis 2 title", 
-        row=1, 
-        col=2
-        )
-    fig.update_yaxes(
-        title_text="Sentiment", 
-        row=1, 
-        col=1
-        )
+#     fig.add_trace(
+#         row=1, 
+#         col=2,
+#         trace=go.Scatter(
+#             x=TiB_data['Vader_sentiment'], 
+#             y=TiB_data['date']
+#             )
+#         )
+#     fig.update_xaxes(
+#         title_text="xaxis 2 title", 
+#         row=1, 
+#         col=2
+#         )
+#     fig.update_yaxes(
+#         title_text="Sentiment", 
+#         row=1, 
+#         col=1
+#         )
 
-    # Updating title and height
-    fig.update_layout(
-        title_text="Subplots testing", 
-        height=650
-        )
-    return fig
+#     # Updating title and height
+#     fig.update_layout(
+#         title_text="Subplots testing", 
+#         height=650
+#         )
+#     return fig
 
 # Run local server
 if __name__ == '__main__':
