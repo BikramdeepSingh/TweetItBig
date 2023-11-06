@@ -18,6 +18,7 @@ This website revolves around this selection and goes beyond textual analysis to 
 - [@Parth-Mavani](https://github.com/parth-mavani)
 - [@Vikas](https://github.com/vicky5060)
 - [@Krishna-Patel](https://github.com/Krisnaa15)
+- [@Tanishq-Taneja](https://github.com/TanishqTaneja)
 
 
 ## Website Snapshots
